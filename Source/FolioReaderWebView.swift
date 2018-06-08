@@ -9,7 +9,7 @@
 import UIKit
 
 /// The custom WebView used in each page
-open class FolioReaderWebView: UIWebView {
+open class FolioReaderWebView: UIWebView, UIPopoverPresentationControllerDelegate {
     var isColors = false
     var isShare = false
     var isOneWord = false
@@ -59,6 +59,7 @@ open class FolioReaderWebView: UIWebView {
         } else {
             if action == #selector(highlight(_:))
                 || action == #selector(highlightWithNote(_:))
+                || action == #selector(translate(_:))
                 || action == #selector(updateHighlightNote(_:))
                 || (action == #selector(define(_:)) && isOneWord)
                 || (action == #selector(play(_:)) && (book.hasAudio || readerConfig.enableTTS))
@@ -211,6 +212,31 @@ open class FolioReaderWebView: UIWebView {
         guard let readerContainer = readerContainer else { return }
         readerContainer.show(vc, sender: nil)
     }
+    
+    @objc func translate(_ sender: UIMenuController?) {
+        guard let selectedText = js("getSelectedText()") else {
+            return
+        }
+        
+        guard let selectedTextRect = js("getRectForSelectedText()") else {
+            return
+        }
+        
+        guard let readerContainer = readerContainer else {
+            return
+            
+        }
+
+        let translationsView = readerConfig.translationsViewControllerClass.init()
+        
+        translationsView.modalPresentationStyle = .popover
+        translationsView.preferredContentSize = CGSize(width: 200, height: 150)
+        translationsView.popoverPresentationController?.delegate = readerContainer
+        translationsView.popoverPresentationController?.sourceView = self
+        translationsView.popoverPresentationController?.sourceRect = CGRectFromString(selectedTextRect)
+
+        readerContainer.present(translationsView, animated: true, completion: nil)
+    }
 
     @objc func play(_ sender: UIMenuController?) {
         self.folioReader.readerAudioPlayer?.play()
@@ -273,6 +299,7 @@ open class FolioReaderWebView: UIWebView {
         let highlightNoteItem = UIMenuItem(title: self.readerConfig.localizedHighlightNote, action: #selector(highlightWithNote(_:)))
         let editNoteItem = UIMenuItem(title: self.readerConfig.localizedHighlightNote, action: #selector(updateHighlightNote(_:)))
         let playAudioItem = UIMenuItem(title: self.readerConfig.localizedPlayMenu, action: #selector(play(_:)))
+        let translateItem = UIMenuItem(title: self.readerConfig.localizedTranslateMenu, action: #selector(translate(_:)))
         let defineItem = UIMenuItem(title: self.readerConfig.localizedDefineMenu, action: #selector(define(_:)))
         let colorsItem = UIMenuItem(title: "C", image: colors) { [weak self] _ in
             self?.colors(menuController)
@@ -315,10 +342,10 @@ open class FolioReaderWebView: UIWebView {
             menuItems = [yellowItem, greenItem, blueItem, pinkItem, underlineItem]
         } else {
             // default menu
-            menuItems = [highlightItem, defineItem, highlightNoteItem]
+            menuItems = [translateItem, highlightItem, defineItem, highlightNoteItem]
 
             if self.book.hasAudio || self.readerConfig.enableTTS {
-                menuItems.insert(playAudioItem, at: 0)
+                menuItems.insert(playAudioItem, at: 1)
             }
 
             if (self.readerConfig.allowSharing == true) {

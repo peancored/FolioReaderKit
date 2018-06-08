@@ -10,7 +10,7 @@ import UIKit
 import FontBlaster
 
 /// Reader container
-open class FolioReaderContainer: UIViewController {
+open class FolioReaderContainer: UIViewController, UIPopoverPresentationControllerDelegate {
     var shouldHideStatusBar = true
     var shouldRemoveEpub = true
     
@@ -207,6 +207,10 @@ open class FolioReaderContainer: UIViewController {
 
     override open var preferredStatusBarStyle: UIStatusBarStyle {
         return self.folioReader.isNight(.lightContent, .default)
+    }
+    
+    public func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
     }
 }
 

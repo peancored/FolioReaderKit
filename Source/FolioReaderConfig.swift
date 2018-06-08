@@ -165,6 +165,10 @@ open class FolioReaderConfig: NSObject {
 
     /// Realm configuration for storing highlights
     open var realmConfiguration         = Realm.Configuration(schemaVersion: 2)
+    
+    // MARK: Types
+    
+    open var translationsViewControllerClass = FolioReaderTranslationsViewController.self
 
     // MARK: Localized strings
 
@@ -183,6 +187,7 @@ open class FolioReaderConfig: NSObject {
     /// Localizes Highlight date format. This is a `dateFormat` from `NSDateFormatter`, so be careful 🤔
     open var localizedHighlightsDateFormat = "MMM dd, YYYY | HH:mm"
     open var localizedHighlightMenu = NSLocalizedString("Highlight", comment: "")
+    open var localizedTranslateMenu = NSLocalizedString("Translate", comment: "")
     open var localizedDefineMenu = NSLocalizedString("Define", comment: "")
     open var localizedPlayMenu = NSLocalizedString("Play", comment: "")
     open var localizedPauseMenu = NSLocalizedString("Pause", comment: "")
