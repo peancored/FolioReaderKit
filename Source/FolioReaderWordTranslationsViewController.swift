@@ -8,6 +8,6 @@
 
 import UIKit
 
-open class FolioReaderTranslationsViewController: UIViewController {
-    public var selectedText: String? = ""
+open class FolioReaderWordTranslationsViewController: UITableViewController {
+    public var word: String?
 }

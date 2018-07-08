@@ -227,15 +227,29 @@ open class FolioReaderWebView: UIWebView, UIPopoverPresentationControllerDelegat
             
         }
 
-        let translationsView = readerConfig.translationsViewControllerClass.init()
-        
-        translationsView.modalPresentationStyle = .popover
-        translationsView.preferredContentSize = CGSize(width: 200, height: 150)
-        translationsView.popoverPresentationController?.delegate = readerContainer
-        translationsView.popoverPresentationController?.sourceView = self
-        translationsView.popoverPresentationController?.sourceRect = CGRectFromString(selectedTextRect)
-
-        readerContainer.present(translationsView, animated: true, completion: nil)
+        if selectedText.split(separator: " ").count == 1 {
+            let wordTranslationsViewController = readerConfig.wordTranslationsViewControllerClass.init()
+            
+            wordTranslationsViewController.word = selectedText
+            wordTranslationsViewController.modalPresentationStyle = .popover
+            wordTranslationsViewController.preferredContentSize = CGSize(width: 250, height: 150)
+            wordTranslationsViewController.popoverPresentationController?.delegate = readerContainer
+            wordTranslationsViewController.popoverPresentationController?.sourceView = self
+            wordTranslationsViewController.popoverPresentationController?.sourceRect = CGRectFromString(selectedTextRect)
+            
+            readerContainer.present(wordTranslationsViewController , animated: true, completion: nil)
+        } else {
+            let textTranslationViewController = readerConfig.textTranslationViewControllerClass.init()
+            
+            textTranslationViewController.text = selectedText
+            textTranslationViewController.modalPresentationStyle = .popover
+            textTranslationViewController.preferredContentSize = CGSize(width: 250, height: 150)
+            textTranslationViewController.popoverPresentationController?.delegate = readerContainer
+            textTranslationViewController.popoverPresentationController?.sourceView = self
+            textTranslationViewController.popoverPresentationController?.sourceRect = CGRectFromString(selectedTextRect)
+            
+            readerContainer.present(textTranslationViewController , animated: true, completion: nil)
+        }
     }
 
     @objc func play(_ sender: UIMenuController?) {
