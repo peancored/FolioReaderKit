@@ -235,7 +235,7 @@ open class FolioReaderWebView: UIWebView, UIPopoverPresentationControllerDelegat
             wordTranslationsViewController.preferredContentSize = CGSize(width: 250, height: 150)
             wordTranslationsViewController.popoverPresentationController?.delegate = readerContainer
             wordTranslationsViewController.popoverPresentationController?.sourceView = self
-            wordTranslationsViewController.popoverPresentationController?.sourceRect = CGRectFromString(selectedTextRect)
+            wordTranslationsViewController.popoverPresentationController?.sourceRect = NSCoder.cgRect(for: selectedTextRect)
             
             readerContainer.present(wordTranslationsViewController , animated: true, completion: nil)
         } else {
@@ -246,7 +246,7 @@ open class FolioReaderWebView: UIWebView, UIPopoverPresentationControllerDelegat
             textTranslationViewController.preferredContentSize = CGSize(width: 250, height: 150)
             textTranslationViewController.popoverPresentationController?.delegate = readerContainer
             textTranslationViewController.popoverPresentationController?.sourceView = self
-            textTranslationViewController.popoverPresentationController?.sourceRect = CGRectFromString(selectedTextRect)
+            textTranslationViewController.popoverPresentationController?.sourceRect = NSCoder.cgRect(for: selectedTextRect)
             
             readerContainer.present(textTranslationViewController , animated: true, completion: nil)
         }
