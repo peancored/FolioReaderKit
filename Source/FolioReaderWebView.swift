@@ -239,16 +239,22 @@ open class FolioReaderWebView: UIWebView, UIPopoverPresentationControllerDelegat
             
             readerContainer.present(wordTranslationsViewController , animated: true, completion: nil)
         } else {
-            let textTranslationViewController = readerConfig.textTranslationViewControllerClass.init()
-            
-            textTranslationViewController.text = selectedText
-            textTranslationViewController.modalPresentationStyle = .popover
-            textTranslationViewController.preferredContentSize = CGSize(width: 250, height: 150)
-            textTranslationViewController.popoverPresentationController?.delegate = readerContainer
-            textTranslationViewController.popoverPresentationController?.sourceView = self
-            textTranslationViewController.popoverPresentationController?.sourceRect = NSCoder.cgRect(for: selectedTextRect)
-            
-            readerContainer.present(textTranslationViewController , animated: true, completion: nil)
+            readerConfig.textTranslationReceiver.delegate?.translateTextClicked(
+                selectedText,
+                rect: NSCoder.cgRect(for: selectedTextRect),
+                webView: self
+            )
+//
+//            let textTranslationViewController = readerConfig.textTranslationViewControllerClass.init()
+//
+//            textTranslationViewController.text = selectedText
+//            textTranslationViewController.modalPresentationStyle = .popover
+//            textTranslationViewController.preferredContentSize = CGSize(width: 250, height: 150)
+//            textTranslationViewController.popoverPresentationController?.delegate = readerContainer
+//            textTranslationViewController.popoverPresentationController?.sourceView = self
+//            textTranslationViewController.popoverPresentationController?.sourceRect = NSCoder.cgRect(for: selectedTextRect)
+//
+//            readerContainer.present(textTranslationViewController , animated: true, completion: nil)
         }
     }
 

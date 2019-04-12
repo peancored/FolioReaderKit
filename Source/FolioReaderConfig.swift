@@ -170,6 +170,7 @@ open class FolioReaderConfig: NSObject {
     
     open var wordTranslationsViewControllerClass = FolioReaderWordTranslationsViewController.self
     open var textTranslationViewControllerClass = FolioReaderTextTranslationViewController.self
+    open var textTranslationReceiver = FolioReaderTextTranslationReceiver()
 
     // MARK: Localized strings
 
